@@ -1,12 +1,9 @@
 package com.firsteconomy.nytapp.repository;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.firsteconomy.nytapp.db.DBManager;
 import com.firsteconomy.nytapp.db.StoryDao;
@@ -23,6 +20,8 @@ import com.firsteconomy.nytapp.network_responses.TopStoriesResponse;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Gaurav on 28-05-2018.
@@ -78,44 +77,31 @@ public class TopStoryRepository {
                         .getDatabase(context)
                         .storyDao();
 
-                final MediatorLiveData<TopStoriesResponse> data = new MediatorLiveData<>();
+                final MutableLiveData<TopStoriesResponse> data = new MutableLiveData<>();
 
-                final LiveData<List<AllStoryDataCombined>> storyLiveData = storyDao.getTopStories(section);
-
-                final LiveData<List<StoryWithMedia>> storyDaoMultiMedia = storyDao.getStoryWithMedia(section);
-
-                data.addSource(storyLiveData, new Observer<List<AllStoryDataCombined>>() {
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                executorService.execute(new Runnable() {
                     @Override
-                    public void onChanged(@Nullable final List<AllStoryDataCombined> dataCombined) {
+                    public void run() {
+                        final List<AllStoryDataCombined> stories = storyDao.getTopStories(section);
 
-                        Log.e(TAG, "onChanged: section - " + section + ", data hashcode -  " + data.hashCode() +
-                                ", story multimedia hashcode - " + storyDaoMultiMedia.hashCode());
+                        final List<StoryWithMedia> multiMedia = storyDao.getStoryWithMedia(section);
 
-                        data.addSource(storyDaoMultiMedia, new Observer<List<StoryWithMedia>>() {
-                            @Override
-                            public void onChanged(@Nullable List<StoryWithMedia> storyList) {
 
-                                ArrayList<TopStory> topStories = new ArrayList<>();
+                        ArrayList<TopStory> topStories = new ArrayList<>();
 
-                                for (StoryWithMedia storyWithMedia : storyList) {
-                                    TopStory topStory = storyWithMedia.story;
-                                    topStory.multimedia = storyWithMedia.multimedia;
-                                    topStories.add(topStory);
-                                }
+                        for (StoryWithMedia storyWithMedia : multiMedia) {
+                            TopStory topStory = storyWithMedia.story;
+                            topStory.multimedia = storyWithMedia.multimedia;
+                            topStories.add(topStory);
+                        }
 
-                                if (dataCombined.size() != 0) {
-                                    dataCombined.get(0).response.topStories = topStories;
-                                    data.setValue(dataCombined.get(0).response);
-                                } else {
-                                    data.setValue(null);
-                                }
-
-                                data.removeSource(storyLiveData);
-                                data.removeSource(storyDaoMultiMedia);
-
-                            }
-                        });
-
+                        if (stories.size() != 0) {
+                            stories.get(0).response.topStories = topStories;
+                            data.postValue(stories.get(0).response);
+                        } else {
+                            data.postValue(null);
+                        }
                     }
                 });
 

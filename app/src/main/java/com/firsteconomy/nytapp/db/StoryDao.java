@@ -34,12 +34,18 @@ public interface StoryDao {
     void insertMultimedium(Multimedium... multimedia);
 
     @Query("SELECT * FROM TopStoriesResponse where section = :section")
-    LiveData<List<AllStoryDataCombined>> getTopStories(String section);
+    List<AllStoryDataCombined> getTopStories(String section);
+
+    @Query("SELECT * FROM TopStory where global_section = :section")
+    List<StoryWithMedia> getStoryWithMedia(String section);
+
+    @Query("SELECT * FROM TopStoriesResponse where section = :section")
+    LiveData<List<AllStoryDataCombined>> getTopStoriesAsLiveData(String section);
 
     //@Query("SELECT * FROM Multimedium")
     //LiveData<ArrayList<Multimedium>> getMultiMedia();
 
     @Query("SELECT * FROM TopStory where global_section = :section")
-    LiveData<List<StoryWithMedia>> getStoryWithMedia(String section);
+    LiveData<List<StoryWithMedia>> getStoryWithMediaAsLiveData(String section);
 
 }
