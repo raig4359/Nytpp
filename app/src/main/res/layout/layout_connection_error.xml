@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.firsteconomy.nytapp.network.Resource" />
+
+        <import type="com.firsteconomy.nytapp.network.Status" />
+
+        <import type="com.firsteconomy.nytapp.ui.common.RetryCallback" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="resource"
+            type="Resource" />
+
+        <variable
+            name="retryCallback"
+            type="RetryCallback" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:id="@+id/iv_error"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="60dp"
+            android:visibility="@{(resource.status==Status.LOADING || resource.status==Status.SUCCESS || (resource.data != null))? View.GONE : View.VISIBLE }"
+            app:errorStatus="@{resource.status}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/no_internet_two" />
+
+        <TextView
+            android:id="@+id/tv_msg"
+            style="@style/RobotoMediumStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@{resource.message}"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="@{(resource.status==Status.LOADING||resource.status==Status.SUCCESS|| (resource.data != null))?View.GONE:View.VISIBLE}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_error"
+            tools:text="Something went wrong with your connection" />
+
+        <Button
+            android:id="@+id/bt_try_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:onClick="@{() -> retryCallback.retry()}"
+            android:text="@string/try_again"
+            android:visibility="@{(resource.status==Status.LOADING||resource.status==Status.SUCCESS|| (resource.data != null))?View.GONE:View.VISIBLE}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_msg" />
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{resource.status==Status.LOADING?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
