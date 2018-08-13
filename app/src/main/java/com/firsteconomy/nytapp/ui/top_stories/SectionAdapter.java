@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.firsteconomy.nytapp.util.StringUtils;
+
 /**
  * Created by Gaurav on 10-08-2018.
  */
@@ -26,7 +28,7 @@ public class SectionAdapter extends FragmentStatePagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return sections[position];
+        return StringUtils.capitalize(sections[position]);
     }
 
     @Override

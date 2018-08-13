@@ -5,6 +5,7 @@
     <string name="try_again">TRY AGAIN</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">search</string>
 
     <string-array name="top_story_sections">
         <item>home</item>

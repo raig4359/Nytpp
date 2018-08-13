@@ -2,12 +2,13 @@ package com.firsteconomy.nytapp.ui.top_stories;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.firsteconomy.nytapp.R;
 import com.firsteconomy.nytapp.databinding.LayoutTopStoryBinding;
 import com.firsteconomy.nytapp.model.TopStory;
@@ -24,14 +25,18 @@ public class TopStoryAdapter extends RecyclerView.Adapter<TopStoryAdapter.TopSto
 
     private Context context;
     private ArrayList<TopStory> topStories = new ArrayList<>();
+    private String TAG = "TopStoryAdapt";
 
     public TopStoryAdapter(Context context) {
         this.context = context;
     }
 
     public void updateList(List<TopStory> newStoryList) {
+        TopStoryDiffCallback diffCallback = new TopStoryDiffCallback(this.topStories,newStoryList);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+        topStories.clear();
         topStories.addAll(newStoryList);
-        notifyDataSetChanged();
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public static class TopStoryViewHolder extends RecyclerView.ViewHolder {
@@ -45,7 +50,7 @@ public class TopStoryAdapter extends RecyclerView.Adapter<TopStoryAdapter.TopSto
 
         public void setBinding(Context context, TopStory topStory) {
             binding.setTopStory(topStory);
-            String imgUrl = topStory.multimedia.size()>=4?topStory.multimedia.get(4).url:"";
+            String imgUrl = topStory.multimedia.size() >= 4 ? topStory.multimedia.get(4).url : "";
             Glide.with(context)
                     .load(imgUrl)
                     .into(binding.ivNews);

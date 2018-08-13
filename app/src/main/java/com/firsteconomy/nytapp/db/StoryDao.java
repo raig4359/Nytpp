@@ -19,19 +19,19 @@ import java.util.List;
 public interface StoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTopStoriesResponse(TopStoriesResponse... topStoriesResponses);
+    long[] insertTopStoriesResponse(TopStoriesResponse... topStoriesResponses);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTopStory(TopStory topStory);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTopStories(List<TopStory> topStory);
+    long[] insertTopStories(List<TopStory> topStory);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMultimedium(List<Multimedium> multimedium);
+    long[] insertMultimedium(List<Multimedium> multimedium);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMultimedium(Multimedium... multimedia);
+    long[] insertMultimedium(Multimedium... multimedia);
 
     @Query("SELECT * FROM TopStoriesResponse where section = :section")
     List<AllStoryDataCombined> getTopStories(String section);
