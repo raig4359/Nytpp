@@ -22,7 +22,7 @@ public class SectionAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return TopStoryFragment.newInstance(sections[position]);
+        return TopStoryView.newInstance(sections[position]);
     }
 
     @Nullable

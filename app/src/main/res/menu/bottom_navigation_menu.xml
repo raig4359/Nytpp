@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_top_stories"
+        android:enabled="true"
+        android:icon="@drawable/ic_top_stories"
+        android:title="@string/menu_top_stories" />
+
+    <item
+        android:id="@+id/action_books"
+        android:enabled="true"
+        android:icon="@drawable/ic_book_a"
+        android:title="@string/menu_books" />
+
+    <item
+        android:id="@+id/action_movie_review"
+        android:enabled="true"
+        android:icon="@drawable/ic_review_a"
+        android:title="@string/menu_movie_review" />
+
+    <item
+        android:id="@+id/action_most_popular"
+        android:enabled="true"
+        android:icon="@drawable/ic_star_c"
+        android:title="@string/menu_most_popular" />
+
+    <item
+        android:id="@+id/action_archive"
+        android:enabled="true"
+        android:icon="@drawable/ic_archive_b"
+        android:title="@string/menu_archive" />
+
+</menu>
