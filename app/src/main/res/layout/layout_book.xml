@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="book"
+            type="com.firsteconomy.nytapp.model.Book" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_book"
+            android:layout_width="79.2dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="3dp"
+            android:src="@drawable/sample_book_cover"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="5dp"
+            android:text="@{book.title}"
+            android:ellipsize="end"
+            android:fontFamily="@font/imperial_bt"
+            android:maxLines="2"
+            android:textColor="@color/black_two"
+            app:layout_constraintLeft_toRightOf="@+id/iv_book"
+            app:layout_constraintTop_toTopOf="@+id/iv_book"
+            tools:text="China Rich Girlfriend" />
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="1dp"
+            android:ellipsize="end"
+            android:text="@{book.author}"
+            android:maxLines="1"
+            android:textColor="@color/grey_one"
+            android:textSize="12sp"
+            app:fontFamily="@font/cheltenham_normal"
+            app:layout_constraintLeft_toRightOf="@+id/iv_book"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:text="Author : Kevin Kwan" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="1dp"
+            android:ellipsize="end"
+            android:text="@{book.description}"
+            android:maxLines="4"
+            android:textColor="@color/black_two"
+            android:textSize="13sp"
+            app:fontFamily="@font/imperial_bt"
+            app:layout_constraintLeft_toRightOf="@+id/iv_book"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_author"
+            tools:text="The second book in the Crazy Rich Asians trilogy. As her wedding draws near, Rachel Chu discovers her birth father." />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

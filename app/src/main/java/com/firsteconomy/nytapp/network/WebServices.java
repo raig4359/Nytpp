@@ -2,6 +2,7 @@ package com.firsteconomy.nytapp.network;
 
 import android.arch.lifecycle.LiveData;
 
+import com.firsteconomy.nytapp.network_responses.OverviewBookListResponse;
 import com.firsteconomy.nytapp.network_responses.TopStoriesResponse;
 
 import retrofit2.Call;
@@ -20,4 +21,7 @@ public interface WebServices {
 
     @GET("topstories/v2/{section}.json")
     LiveData<ApiResponse<TopStoriesResponse>> getTopStories(@Path("section") String section);
+
+    @GET("books/v3/lists/overview.json")
+    LiveData<ApiResponse<OverviewBookListResponse>> getOverviewBookList();
 }

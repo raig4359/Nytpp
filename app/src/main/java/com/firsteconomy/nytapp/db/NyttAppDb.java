@@ -3,6 +3,8 @@ package com.firsteconomy.nytapp.db;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
+import com.firsteconomy.nytapp.model.Book;
+import com.firsteconomy.nytapp.model.BookCategory;
 import com.firsteconomy.nytapp.model.Multimedium;
 import com.firsteconomy.nytapp.model.TopStory;
 import com.firsteconomy.nytapp.network_responses.TopStoriesResponse;
@@ -11,7 +13,11 @@ import com.firsteconomy.nytapp.network_responses.TopStoriesResponse;
 @Database(entities = {
         TopStoriesResponse.class,
         TopStory.class,
-        Multimedium.class}, version = 1)
+        Multimedium.class,
+        BookCategory.class,
+        Book.class}, version = 1)
 public abstract class NyttAppDb extends RoomDatabase {
     public abstract StoryDao storyDao();
+
+    public abstract BookDao bookDao();
 }
