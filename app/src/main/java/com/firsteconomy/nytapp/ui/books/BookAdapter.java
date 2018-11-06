@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.firsteconomy.nytapp.databinding.LayoutBookBinding;
 import com.firsteconomy.nytapp.model.Book;
 
@@ -25,7 +26,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         this.books.addAll(books);
         notifyDataSetChanged();
         //for (BookCategory bookCategory : categories) {
-            //books.addAll(bookCategory.books);
+        //books.addAll(bookCategory.books);
         //}
         //lists.addAll(categories);
     }
@@ -59,6 +60,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         public void setBinding(Book book) {
             Glide.with(binding.getRoot().getContext())
                     .load(book.bookImage)
+                    .transition(DrawableTransitionOptions.withCrossFade(400))
                     .into(binding.ivBook);
             binding.setBook(book);
             binding.executePendingBindings();

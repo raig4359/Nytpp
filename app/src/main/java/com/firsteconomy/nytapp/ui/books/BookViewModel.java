@@ -7,7 +7,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.firsteconomy.nytapp.model.Book;
-import com.firsteconomy.nytapp.model.BookCategory;
 import com.firsteconomy.nytapp.network.Resource;
 import com.firsteconomy.nytapp.repository.BooksRepository;
 
@@ -20,20 +19,16 @@ import java.util.List;
 public class BookViewModel extends ViewModel {
 
     private BooksRepository booksRepository;
-    private LiveData<Resource<List<Book>>> bookOverviewList;
 
     public BookViewModel(final BooksRepository booksRepository) {
         this.booksRepository = booksRepository;
     }
 
     public LiveData<Resource<List<Book>>> getBookOverviewList() {
-        if (bookOverviewList == null) {
-            bookOverviewList = booksRepository.getBookListOverview();
-        }
-        return bookOverviewList;
+        return booksRepository.getBookListOverview();
     }
 
-    public static class Factory extends ViewModelProvider.NewInstanceFactory{
+    public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         private final Context context;
         private final BooksRepository booksRepository;

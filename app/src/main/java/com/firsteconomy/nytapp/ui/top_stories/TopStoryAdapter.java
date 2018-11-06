@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.firsteconomy.nytapp.R;
 import com.firsteconomy.nytapp.databinding.LayoutTopStoryBinding;
 import com.firsteconomy.nytapp.model.TopStory;
@@ -53,6 +54,7 @@ public class TopStoryAdapter extends RecyclerView.Adapter<TopStoryAdapter.TopSto
             String imgUrl = topStory.multimedia.size() >= 4 ? topStory.multimedia.get(4).url : "";
             Glide.with(context)
                     .load(imgUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade(400))
                     .into(binding.ivNews);
             binding.tvAuthorTimestamp.setText(context.getString(R.string.time_and_author_name,
                     topStory.byline, DateFormatter.getFormattedDate()));

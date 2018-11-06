@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.firsteconomy.nytapp.databinding.FragmentBookBinding;
 import com.firsteconomy.nytapp.model.Book;
 import com.firsteconomy.nytapp.network.Resource;
+import com.firsteconomy.nytapp.ui.common.RetryCallback;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class BookFragment extends Fragment {
     private BookInteraction mListener;
     private FragmentBookBinding bookBinding;
     private BookViewModel bookViewModel;
+    private BookAdapter bookAdapter;
+    private Observer<Resource<List<Book>>> observer;
 
     public BookFragment() {
         // Required empty public constructor
@@ -51,29 +54,43 @@ public class BookFragment extends Fragment {
         }
         BookViewModel.Factory factory = new BookViewModel.Factory(getContext());
         bookViewModel = ViewModelProviders.of(this, factory).get(BookViewModel.class);
+        initObserver();
+    }
+
+    private void initObserver() {
+        observer = new Observer<Resource<List<Book>>>() {
+            @Override
+            public void onChanged(@Nullable Resource<List<Book>> listResource) {
+                List<Book> books = listResource.data == null ? null :
+                        listResource.data.size() == 0 ? null : listResource.data;
+                bookBinding.setBooksOverviewResource(listResource);
+                bookBinding.executePendingBindings();
+                if (listResource.data != null)
+                    bookAdapter.updateList(listResource.data);
+            }
+        };
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        bookBinding = FragmentBookBinding.inflate(LayoutInflater
-                .from(getActivity().getApplicationContext()), container, false);
+        bookBinding = FragmentBookBinding.inflate(inflater, container, false);
+        bookBinding.setRetryCallback(new RetryCallback() {
+            @Override
+            public void retry() {
+                bookViewModel.getBookOverviewList().observe(BookFragment.this, observer);
+            }
+        });
         return bookBinding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final BookAdapter bookAdapter = new BookAdapter();
+        bookAdapter = new BookAdapter();
         bookBinding.rvBooks.setAdapter(bookAdapter);
-        bookViewModel.getBookOverviewList().observe(this, new Observer<Resource<List<Book>>>() {
-            @Override
-            public void onChanged(@Nullable Resource<List<Book>> listResource) {
-                if (listResource.data != null)
-                    bookAdapter.updateList(listResource.data);
-            }
-        });
+        bookViewModel.getBookOverviewList().observe(this, observer);
     }
 
     @Override
