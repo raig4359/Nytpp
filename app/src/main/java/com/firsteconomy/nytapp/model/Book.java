@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -35,10 +36,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Book {
 
     @JsonIgnore
-    @PrimaryKey(autoGenerate = true)
-    public long id;
-
-    @JsonIgnore
     @ColumnInfo(name = "category_id")
     public long categoryId;
 
@@ -63,6 +60,8 @@ public class Book {
     @JsonProperty("rank")
     public long rank;
 
+    @NonNull
+    @PrimaryKey
     @JsonProperty("title")
     public String title;
 
