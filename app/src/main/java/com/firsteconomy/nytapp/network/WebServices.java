@@ -2,6 +2,7 @@ package com.firsteconomy.nytapp.network;
 
 import android.arch.lifecycle.LiveData;
 
+import com.firsteconomy.nytapp.model.MoviesReviewResponse;
 import com.firsteconomy.nytapp.network_responses.OverviewBookListResponse;
 import com.firsteconomy.nytapp.network_responses.TopStoriesResponse;
 
@@ -24,4 +25,7 @@ public interface WebServices {
 
     @GET("books/v3/lists/overview.json")
     LiveData<ApiResponse<OverviewBookListResponse>> getOverviewBookList();
+
+    @GET("movies/v2/reviews/all.json")
+    LiveData<ApiResponse<MoviesReviewResponse>> getMovieReviews();
 }

@@ -11,15 +11,18 @@ import android.view.View;
 
 import com.firsteconomy.nytapp.R;
 import com.firsteconomy.nytapp.databinding.ActivityMainBinding;
+import com.firsteconomy.nytapp.model.MovieReview;
 import com.firsteconomy.nytapp.ui.books.BookFragment;
 import com.firsteconomy.nytapp.ui.common.BottomNavigationViewHelper;
+import com.firsteconomy.nytapp.ui.movie_review.MovieReviewFragment;
 import com.firsteconomy.nytapp.ui.top_stories.TopStoryFragment;
 
 public class MainActivity extends BaseActivity implements TopStoryFragment.OnTopStoryInteraction,
-        BookFragment.BookInteraction {
+        BookFragment.BookInteraction,MovieReviewFragment.ReviewInteraction {
 
     private static final String TOP_STORY_FRAG = "TopStoryFrag";
     private static final String BOOK_FRAG = "BookFrag";
+    private static final String MOVIE_REVIEW_FRAG = "MovieReviewFrag";
     private ActivityMainBinding binding;
 
     @Override
@@ -46,6 +49,7 @@ public class MainActivity extends BaseActivity implements TopStoryFragment.OnTop
                         showBookFragment();
                         break;
                     case R.id.action_movie_review:
+                        showMovieReviewFragment();
                         break;
                     case R.id.action_most_popular:
                         break;
@@ -77,6 +81,18 @@ public class MainActivity extends BaseActivity implements TopStoryFragment.OnTop
             manager.beginTransaction()
                     .replace(R.id.frame, fragment, BOOK_FRAG)
                     .addToBackStack(BOOK_FRAG)
+                    .commit();
+        }
+    }
+
+    public void showMovieReviewFragment() {
+        FragmentManager manager = getSupportFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(MOVIE_REVIEW_FRAG, 0);
+        if (!fragmentPopped && manager.findFragmentByTag(MOVIE_REVIEW_FRAG) == null) {
+            MovieReviewFragment fragment = MovieReviewFragment.newInstance("", "");
+            manager.beginTransaction()
+                    .replace(R.id.frame, fragment, MOVIE_REVIEW_FRAG)
+                    .addToBackStack(MOVIE_REVIEW_FRAG)
                     .commit();
         }
     }

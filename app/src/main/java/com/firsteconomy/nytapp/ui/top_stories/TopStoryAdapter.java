@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -33,7 +32,7 @@ public class TopStoryAdapter extends RecyclerView.Adapter<TopStoryAdapter.TopSto
     }
 
     public void updateList(List<TopStory> newStoryList) {
-        TopStoryDiffCallback diffCallback = new TopStoryDiffCallback(this.topStories,newStoryList);
+        TopStoryDiffCallback diffCallback = new TopStoryDiffCallback(this.topStories, newStoryList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
         topStories.clear();
         topStories.addAll(newStoryList);
@@ -51,7 +50,12 @@ public class TopStoryAdapter extends RecyclerView.Adapter<TopStoryAdapter.TopSto
 
         public void setBinding(Context context, TopStory topStory) {
             binding.setTopStory(topStory);
-            String imgUrl = topStory.multimedia.size() >= 4 ? topStory.multimedia.get(4).url : "";
+            String imgUrl;
+            if (topStory.multimedia.size() == 4) {
+                imgUrl = topStory.multimedia.size() > 3 ? topStory.multimedia.get(3).url : "";
+            } else {
+                imgUrl = topStory.multimedia.size() >= 4 ? topStory.multimedia.get(4).url : "";
+            }
             Glide.with(context)
                     .load(imgUrl)
                     .transition(DrawableTransitionOptions.withCrossFade(400))

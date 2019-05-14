@@ -1,5 +1,6 @@
 package com.firsteconomy.nytapp.ui.test_stuff;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -9,6 +10,7 @@ import com.firsteconomy.nytapp.network_responses.TopStoriesResponse;
 import java.io.IOException;
 
 import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 import retrofit2.Response;
 
 /**
@@ -19,9 +21,13 @@ public class SampleWorker extends Worker {
 
     private String TAG ="SampleWorker";
 
+    public SampleWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
+
     @NonNull
     @Override
-    public WorkerResult doWork() {
+    public Result doWork() {
 
         Response<TopStoriesResponse> response = null;
 
@@ -36,15 +42,17 @@ public class SampleWorker extends Worker {
         }
 
         if (response == null || response.body() == null) {
-            return WorkerResult.RETRY;
+            return Result.retry();
         }
 
         if (response.body().status.equalsIgnoreCase("OK")) {
-            return WorkerResult.SUCCESS;
+            return Result.success();
         }
 
-        return WorkerResult.FAILURE;
+        return Result.failure();
     }
+
+
 
 
 }
